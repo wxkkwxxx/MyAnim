@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">MyDialog</string>
+    <string name="sign_up">SIGN UP</string>
+    <string name="success">SUCCESS</string>
+</resources>
