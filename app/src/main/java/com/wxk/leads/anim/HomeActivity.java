@@ -7,12 +7,10 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
-import android.view.ViewAnimationUtils;
 import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
@@ -21,13 +19,14 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import io.codetail.animation.ViewAnimationUtils;
 import io.codetail.widget.RevealFrameLayout;
 
 /**
  * Created by Administrator on 2017/3/12 0012.
  */
 
-public class HomeActivity extends BaseActivity{
+public class HomeActivity extends BaseActivity {
 
     private RevealFrameLayout reveal_layout;
     private RelativeLayout layout_sign_up;
@@ -76,7 +75,7 @@ public class HomeActivity extends BaseActivity{
         int left = intent.getIntExtra("left", 0);
         int top = intent.getIntExtra("top", 0);
         int width = intent.getIntExtra("width", 0);
-        int height =intent.getIntExtra("height", 0);
+        int height = intent.getIntExtra("height", 0);
 
         //获取到当前控件的属性
         int[] location = new int[2];
@@ -94,9 +93,9 @@ public class HomeActivity extends BaseActivity{
         int cy = top - height / 2;
         float radius = (float) Math.hypot(reveal_layout.getWidth(), reveal_layout.getHeight());
         Animator animator;
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
-            animator = ViewAnimationUtils.createCircularReveal(reveal_layout, cx, cy, 0, radius);
+            animator = ViewAnimationUtils.createCircularReveal(reveal_layout, cx, cy, 0, radius, View.LAYER_TYPE_HARDWARE);
             animator.setDuration(700);
             animator.addListener(new AnimatorListenerAdapter() {
                 @Override
@@ -105,7 +104,10 @@ public class HomeActivity extends BaseActivity{
                 }
             });
             animator.start();
-        }
+//        } else {
+
+
+//        }
 
         Point start = new Point(layout_sign_up.getX(), layout_sign_up.getY());
         Point end = new Point(curX, curY - getStatusBarHeight(this));
@@ -122,7 +124,7 @@ public class HomeActivity extends BaseActivity{
         });
         animator1.setDuration(700);
         animator1.start();
-        
+
         final ObjectAnimator lineAnim = ObjectAnimator.ofFloat(line, "ScaleX", 0f, 0.6f, 0.9f, 1f);
         lineAnim.setDuration(1500);
         lineAnim.setInterpolator(new DecelerateInterpolator());
@@ -152,10 +154,10 @@ public class HomeActivity extends BaseActivity{
 
     private void loopAnim() {
 
-        if(index % 2 == 0){
+        if (index % 2 == 0) {
 
             successEnter();
-        }else{
+        } else {
 
             singupEnter();
         }
@@ -165,17 +167,17 @@ public class HomeActivity extends BaseActivity{
     //success进入
     private void successEnter() {
 
-        if(tv_success.getVisibility() != View.VISIBLE){
+        if (tv_success.getVisibility() != View.VISIBLE) {
             tv_success.setVisibility(View.VISIBLE);
         }
 
         //得到success的宽度,然后设置起始位置以及终点位置
-        ObjectAnimator sucessTran = ObjectAnimator.ofFloat(tv_success, "TranslationX", -measuredWidth*1.2f, -measuredWidth*0.2f, 0f);
+        ObjectAnimator sucessTran = ObjectAnimator.ofFloat(tv_success, "TranslationX", -measuredWidth * 1.2f, -measuredWidth * 0.2f, 0f);
         //透明度渐变从0-1
         ObjectAnimator sucessAlpha = ObjectAnimator.ofFloat(tv_success, "Alpha", 0.1f, 0.8f, 1f);
 
         //此处同理
-        ObjectAnimator signupTran = ObjectAnimator.ofFloat(tv_sign_up, "TranslationX", 0, measuredWidth*0.7f, measuredWidth* 1.5f);
+        ObjectAnimator signupTran = ObjectAnimator.ofFloat(tv_sign_up, "TranslationX", 0, measuredWidth * 0.7f, measuredWidth * 1.5f);
         signupTran.setInterpolator(new AccelerateInterpolator());
         ObjectAnimator signupAplha = ObjectAnimator.ofFloat(tv_sign_up, "Alpha", 1.0f, 1.0f, 0.4f, 0f);
 
@@ -194,10 +196,10 @@ public class HomeActivity extends BaseActivity{
 
     private void singupEnter() {
 
-        ObjectAnimator signupTran = ObjectAnimator.ofFloat(tv_sign_up, "TranslationX", -measuredWidth*1.2f, -measuredWidth*0.2f, 0f);
+        ObjectAnimator signupTran = ObjectAnimator.ofFloat(tv_sign_up, "TranslationX", -measuredWidth * 1.2f, -measuredWidth * 0.2f, 0f);
         ObjectAnimator signupAplha = ObjectAnimator.ofFloat(tv_sign_up, "Alpha", 0.1f, 0.8f, 1f);
 
-        ObjectAnimator successTran = ObjectAnimator.ofFloat(tv_success, "TranslationX", 0, measuredWidth*0.7f, measuredWidth* 1.5f);
+        ObjectAnimator successTran = ObjectAnimator.ofFloat(tv_success, "TranslationX", 0, measuredWidth * 0.7f, measuredWidth * 1.5f);
         successTran.setInterpolator(new AccelerateInterpolator());
         ObjectAnimator successAlpha = ObjectAnimator.ofFloat(tv_success, "Alpha", 1.0f, 1.0f, 0.4f, 0f);
 
@@ -214,14 +216,14 @@ public class HomeActivity extends BaseActivity{
         });
     }
 
-    private Handler handler = new Handler(){
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if(index >= 3){
+            if (index >= 3) {
 
                 enterHome();
-            }else {
+            } else {
 
                 loopAnim();
             }
@@ -238,11 +240,9 @@ public class HomeActivity extends BaseActivity{
 
         ValueAnimator valueAnimator = ValueAnimator.ofInt(scale_layout.getHeight(), 0);
         valueAnimator.setInterpolator(new DecelerateInterpolator());
-        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener()
-        {
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
-            public void onAnimationUpdate(ValueAnimator animation)
-            {
+            public void onAnimationUpdate(ValueAnimator animation) {
                 scale_layout.getLayoutParams().height = (int) animation.getAnimatedValue();
                 scale_layout.requestLayout();
             }

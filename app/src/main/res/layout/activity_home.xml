@@ -15,12 +15,19 @@
         />
 
     <io.codetail.widget.RevealFrameLayout
-        android:id="@+id/reveal_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimary"
-        android:orientation="vertical"
-        android:visibility="invisible" />
+        >
+
+        <io.codetail.widget.RevealFrameLayout
+            android:id="@+id/reveal_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimary"
+            android:orientation="vertical"
+            android:visibility="invisible" />
+    </io.codetail.widget.RevealFrameLayout>
+
 
     <RelativeLayout
         android:id="@+id/rl_title"
